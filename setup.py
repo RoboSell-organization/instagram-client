@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="instagram-client",
-    version="0.1.3",
+    version="0.1.4",
     packages=find_packages(),
     author="Abdulvoris",
     author_email="erkinovabdulvoris101@gmail.com",
@@ -16,19 +16,10 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/RoboSell-organization/instagram-client",
     install_requires=[
-        "annotated-types>=0.7.0",
-        "anyio>=4.8.0",
-        "certifi>=2025.1.31",
-        "charset-normalizer>=3.4.1",
-        "idna>=3.10",
-        "pydantic>=2.10.6",
-        "python-dateutil>=2.9.0",
-        "python-dotenv>=1.0.1",
-        "requests>=2.32.0",
-        "sniffio>=1.3.1",
-        "starlette>=0.45.3",
-        "typing_extensions>=4.12.2",
-        "urllib3>=2.3.0"
+        "requests>=2.0.0",
+        "python-dateutil>=2.8.0",
+        "pydantic>=1.9.0",
+        "typing_extensions>=4.0.0"
     ],
     python_requires=">=3.8",
 )
