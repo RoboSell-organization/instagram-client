@@ -14,7 +14,7 @@ setup(
     description="Instagram official api 2.0 client by robosell.uz",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Abdulvoris101/rb-commons",
+    url="https://github.com/RoboSell-organization/instagram-client",
     install_requires=[
         "annotated-types>=0.7.0",
         "anyio>=4.8.0",
