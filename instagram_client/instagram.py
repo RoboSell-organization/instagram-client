@@ -195,11 +195,11 @@ class InstagramClient(BaseAPI):
         """
 
         messages = []
-        url = f'/{conversation_id}?access_token={self.access_token}&fields=messages{{message,from,created_time}}'
+        url = f'{self.BASE_URL}/{conversation_id}?access_token={self.access_token}&fields=messages{{message,from,created_time}}'
         cycle = 1
 
         while url and len(messages) < desired_limit:
-            response = self._get(url)
+            response = self._get(url, reset_base_url=True)
             json_data = response.json()
 
             if cycle > 1:
