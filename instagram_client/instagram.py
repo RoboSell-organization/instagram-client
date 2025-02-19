@@ -175,7 +175,6 @@ class InstagramClient(BaseAPI):
             It includes participant details in the response.
 
             :param user_id: The unique identifier of the user to filter conversations.
-            :param access_token: The access token used to authenticate the request.
             :return: A list of Conversation objects that include the specified user.
             """
         response = self._get(f'/me/conversations?platform=instagram&access_token={self.access_token}&user_id={user_id}&fields=participants')
@@ -191,7 +190,6 @@ class InstagramClient(BaseAPI):
             by their creation time.
 
             :param conversation_id: The unique identifier of the conversation.
-            :param access_token: The access token used to authenticate the request.
             :param desired_limit: The maximum number of messages to retrieve (default is 100).
             :return: A list of MessageItem objects sorted by creation time.
         """

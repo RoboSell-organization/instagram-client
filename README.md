@@ -107,21 +107,18 @@ print(f"Is Following Business: {user_profile.is_user_follow_business}")
 
 ```python
 # Get all conversations
-conversations = client.get_conversations(access_token="your_access_token")
+conversations = client.get_conversations()
 for conversation in conversations:
     print(f"Conversation ID: {conversation.id}")
     print(f"Participants: {conversation.participants}")
 
 # Get conversation with specific user
 user_conversations = client.get_user_conversation(
-    user_id="target_user_id",
-    access_token="your_access_token"
-)
+    user_id="target_user_id")
 
 # Get messages from a conversation
 messages = client.get_conversation_messages(
     conversation_id="conversation_id",
-    access_token="your_access_token",
     desired_limit=100  # Optional: limit number of messages
 )
 
