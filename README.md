@@ -151,11 +151,11 @@ response = client.send_message(
 The library includes built-in error handling for common API issues:
 
 ```python
-from instagram_client.exceptions.http_exceptions import ForbiddenException
+from instagram_client.exceptions.http_exceptions import ForbiddenApiException
 
 try:
     token = client.retrieve_access_token(code="invalid_code")
-except ForbiddenException as e:
+except ForbiddenApiException as e:
     print(f"Authentication failed: {e}")
 ```
 

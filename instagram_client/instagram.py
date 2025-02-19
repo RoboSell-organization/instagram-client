@@ -1,7 +1,7 @@
 from os import access
 from urllib.parse import urlencode
 from instagram_client.api.base_api import BaseAPI
-from instagram_client.exceptions.http_exceptions import ForbiddenException
+from instagram_client.exceptions.http_exceptions import ForbiddenApiException
 from instagram_client.schemes.conversation_schemes import Conversation, ConversationsResponse, UserConversationResponse, \
     MessagesListResponse, Messages, MessageItem, SendMessageScheme
 from instagram_client.schemes.user_schemes import LoginResponse, TokenResponse, UserResponse, UserProfile
@@ -88,11 +88,11 @@ class InstagramClient(BaseAPI):
 
            This method sends a POST request to Instagram's access token endpoint with the necessary
            credentials and authorization code to exchange it for an access token. If the response does
-           not contain an 'access_token', it raises a ForbiddenException.
+           not contain an 'access_token', it raises a ForbiddenApiException.
 
            :param code: The authorization code returned by Instagram after user authorization.
            :return: An instance of LoginResponse containing the access token and related data.
-           :raises ForbiddenException: If the access token is not present in the response.
+           :raises ForbiddenApiException: If the access token is not present in the response.
        """
         payload = {'client_id': self.client_id, 'client_secret': self.client_secret, 'grant_type': 'authorization_code',
         'redirect_uri': self.redirect_uri, 'code': code}
@@ -102,7 +102,7 @@ class InstagramClient(BaseAPI):
         data = response.json()
 
         if 'access_token' not in data:
-            raise ForbiddenException("Access denied!", 401)
+            raise ForbiddenApiException("Access denied!", 401)
 
         self.set_access_token(access_token=data['access_token'])
         return LoginResponse(**data)

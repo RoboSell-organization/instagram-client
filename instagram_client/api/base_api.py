@@ -3,7 +3,7 @@ import json
 import requests
 from requests import RequestException
 
-from instagram_client.exceptions.http_exceptions import BadRequestException, UnexpectedServerException
+from instagram_client.exceptions.http_exceptions import BadRequestApiException, UnexpectedServerApiException
 
 
 class BaseAPI:
@@ -53,7 +53,7 @@ class BaseAPI:
             }
 
             if method not in request_methods:
-                raise BadRequestException(f"Unsupported HTTP method: {method}")
+                raise BadRequestApiException(f"Unsupported HTTP method: {method}")
 
             kwargs = {
                 'params': params,
@@ -68,18 +68,18 @@ class BaseAPI:
             if not (200 <= response.status_code < 300):
                 error_message = data.get("message")
                 if error_message is not None:
-                    raise BadRequestException(error_message)
+                    raise BadRequestApiException(error_message)
 
-                raise UnexpectedServerException(f"Unexpected error occured: {response.text}")
+                raise UnexpectedServerApiException(f"Unexpected error occured: {response.text}")
 
             return response
 
         except RequestException as e:
-            raise BadRequestException(f"Request failed: {e}") from e
+            raise BadRequestApiException(f"Request failed: {e}") from e
         except (json.JSONDecodeError, ValueError) as e:
-            raise BadRequestException(f"Failed to parse JSON: {e}") from e
+            raise BadRequestApiException(f"Failed to parse JSON: {e}") from e
         except Exception as e:
-            raise BadRequestException("Something went wrong")
+            raise BadRequestApiException("Something went wrong")
 
     def _post(self, path: str, data: dict, headers: dict = None, params: dict = None, reset_base_url: bool = False, form_encoded: bool = False) -> requests.Response:
         return self._make_request('POST', path, data=data, headers=headers, params=params, reset_base_url=reset_base_url, form_encoded=form_encoded)
