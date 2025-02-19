@@ -1,3 +1,4 @@
+from os import access
 from urllib.parse import urlencode
 from instagram_client.api.base_api import BaseAPI
 from instagram_client.exceptions.http_exceptions import ForbiddenException
@@ -44,7 +45,7 @@ class InstagramClient(BaseAPI):
         self.headers = {"Accept": "application/json", "Content-Type": "application/json",
                         "Authorization": f"Bearer {self.access_token}"}
 
-    def _upgrade_access_token(self, access_token: str) -> None:
+    def set_access_token(self, access_token: str) -> None:
         """
             Upgrades the access token for this InstagramClient instance.
 
@@ -103,7 +104,7 @@ class InstagramClient(BaseAPI):
         if 'access_token' not in data:
             raise ForbiddenException("Access denied!", 401)
 
-        self._upgrade_access_token(access_token=data['access_token'])
+        self.set_access_token(access_token=data['access_token'])
         return LoginResponse(**data)
 
     def exchange_long_lived_token(self) -> TokenResponse:
@@ -120,7 +121,7 @@ class InstagramClient(BaseAPI):
         response = self._get(f'/access_token?' + urlencode(query_params))
         token = TokenResponse(**response.json())
 
-        self._upgrade_access_token(access_token=token.access_token)
+        self.set_access_token(access_token=token.access_token)
         return token
 
     def get_me(self) -> UserResponse:
@@ -152,7 +153,7 @@ class InstagramClient(BaseAPI):
         response = self._get(f'/{user_id}?fields={allowed_fields}&access_token={self.access_token}')
         return UserProfile(**response.json())
 
-    def get_conversations(self, access_token: str) -> list[Conversation]:
+    def get_conversations(self) -> list[Conversation]:
         """
             Retrieves the list of conversations for the authenticated Instagram user.
 
@@ -160,13 +161,12 @@ class InstagramClient(BaseAPI):
             conversations associated with the authenticated user on the Instagram platform.
             It requests participant details for each conversation.
 
-            :param access_token: The access token used to authenticate the request.
             :return: A list of Conversation objects.
         """
-        response = self._get(f'/me/conversations?platform=instagram&access_token={access_token}&fields=participants')
+        response = self._get(f'/me/conversations?platform=instagram&access_token={self.access_token}&fields=participants')
         return ConversationsResponse(**response.json()).data
 
-    def get_user_conversation(self, user_id: int, access_token: str) -> list[Conversation]:
+    def get_user_conversation(self, user_id: int) -> list[Conversation]:
         """
             Retrieves conversations involving a specific user.
 
@@ -178,10 +178,10 @@ class InstagramClient(BaseAPI):
             :param access_token: The access token used to authenticate the request.
             :return: A list of Conversation objects that include the specified user.
             """
-        response = self._get(f'/me/conversations?platform=instagram&access_token={access_token}&user_id={user_id}&fields=participants')
+        response = self._get(f'/me/conversations?platform=instagram&access_token={self.access_token}&user_id={user_id}&fields=participants')
         return UserConversationResponse(**response.json()).data
 
-    def get_conversation_messages(self, conversation_id: str, access_token: str, desired_limit: int = 100) -> list[MessageItem]:
+    def get_conversation_messages(self, conversation_id: str, desired_limit: int = 100) -> list[MessageItem]:
         """
             Retrieves messages from a specific conversation with pagination support.
 
@@ -197,7 +197,7 @@ class InstagramClient(BaseAPI):
         """
 
         messages = []
-        url = f'/{conversation_id}?access_token={access_token}&fields=messages{{message,from,created_time}}'
+        url = f'/{conversation_id}?access_token={self.access_token}&fields=messages{{message,from,created_time}}'
         cycle = 1
 
         while url and len(messages) < desired_limit:
