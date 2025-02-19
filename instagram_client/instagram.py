@@ -103,6 +103,7 @@ class InstagramClient(BaseAPI):
         if 'access_token' not in data:
             raise ForbiddenException("Access denied!", 401)
 
+        self._upgrade_access_token(access_token=data['access_token'])
         return LoginResponse(**data)
 
     def exchange_long_lived_token(self) -> TokenResponse:
@@ -117,7 +118,10 @@ class InstagramClient(BaseAPI):
        """
         query_params = {"grant_type": "ig_exchange_token", "client_secret": self.client_secret, "access_token": self.access_token}
         response = self._get(f'/access_token?' + urlencode(query_params))
-        return TokenResponse(**response.json())
+        token = TokenResponse(**response.json())
+
+        self._upgrade_access_token(access_token=token.access_token)
+        return token
 
     def get_me(self) -> UserResponse:
         """
