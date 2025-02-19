@@ -18,12 +18,12 @@ class Cursors(BaseModel):
     after: str
 
 class Paging(BaseModel):
-    cursors: Cursors
+    cursors: Optional[Cursors] = None
     next: Optional[str] = None
 
 class ConversationsResponse(BaseModel):
     data: List[Conversation]
-    paging: Paging
+    paging: Optional[Paging] = None
 
 class UserConversationResponse(BaseModel):
     data: List[Conversation]
@@ -40,10 +40,10 @@ class MessageItem(BaseModel):
 
 class Messages(BaseModel):
     data: List[MessageItem]
-    paging: Paging
+    paging: Optional[Paging] = None
 
 class MessagesListResponse(BaseModel):
-    messages: Messages
+    messages: Optional[Messages] = None
     id: str
 
 
