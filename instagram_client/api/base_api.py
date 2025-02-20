@@ -78,8 +78,6 @@ class BaseAPI:
             raise BadRequestApiException(f"Request failed: {e}") from e
         except (json.JSONDecodeError, ValueError) as e:
             raise BadRequestApiException(f"Failed to parse JSON: {e}") from e
-        except Exception as e:
-            raise BadRequestApiException("Something went wrong")
 
     def _post(self, path: str, data: dict, headers: dict = None, params: dict = None, reset_base_url: bool = False, form_encoded: bool = False) -> requests.Response:
         return self._make_request('POST', path, data=data, headers=headers, params=params, reset_base_url=reset_base_url, form_encoded=form_encoded)
