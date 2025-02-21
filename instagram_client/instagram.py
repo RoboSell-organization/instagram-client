@@ -232,3 +232,8 @@ class InstagramClient(BaseAPI):
         response = self._post(f'/{instagram_id}/messages', headers=self.headers, data=payload.model_dump())
         return response.json()
 
+
+    def subscribe_to_webhook(self, user_id: int, subscribed_fields: str = "messages"):
+        response = self._post(f'/{user_id}/subscribed_apps?subscribed_fields={subscribed_fields}&access_token={self.access_token}&fields={subscribed_fields}', headers=self.headers,
+                              data={})
+        return response.json()

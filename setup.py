@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="instagram-client",
-    version="0.1.8",
+    version="0.2.0",
     packages=find_packages(),
     author="Abdulvoris",
     author_email="erkinovabdulvoris101@gmail.com",
