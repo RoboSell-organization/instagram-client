@@ -234,6 +234,15 @@ class InstagramClient(BaseAPI):
 
 
     def subscribe_to_webhook(self, user_id: int, subscribed_fields: str = "messages"):
-        response = self._post(f'/{user_id}/subscribed_apps?subscribed_fields={subscribed_fields}&access_token={self.access_token}&fields={subscribed_fields}', headers=self.headers,
+        """
+        Subscribes a specific user to webhook events for designated fields.
+        The function constructs the API endpoint URL using the provided user_id, subscribed_fields, and the instance's access token.
+        It then sends a POST request to subscribe the user to the webhook events, and returns the response in JSON format.
+
+        :param user_id:
+        :param subscribed_fields:
+        :return: dict
+        """
+        response = self._post(f'/{user_id}/subscribed_apps?subscribed_fields={subscribed_fields}&access_token={self.access_token}', headers=self.headers,
                               data={})
         return response.json()
