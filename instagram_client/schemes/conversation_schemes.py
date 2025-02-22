@@ -53,9 +53,19 @@ class MessageRecipient(BaseModel):
 class SendMessage(BaseModel):
     text: str
 
+class MessageAttachmentUrl(BaseModel):
+    url: str
+
+class MessageAttachmentPayload(BaseModel):
+    type: str
+    payload: MessageAttachmentUrl
+
+class MessageAttachment(BaseModel):
+    attachment: MessageAttachmentPayload
+
 class SendMessageScheme(BaseModel):
     recipient: MessageRecipient
-    message: SendMessage
+    message: SendMessage | MessageAttachment
 
 
 # Webhook
