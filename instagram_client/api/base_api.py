@@ -67,6 +67,10 @@ class BaseAPI:
 
             if not (200 <= response.status_code < 300):
                 error_message = data.get("message")
+
+                if data.get('error'):
+                    error_message = data.get('error')
+
                 if error_message is not None:
                     raise BadRequestApiException(error_message)
 
